@@ -1,5 +1,7 @@
 package br.com.cartorio.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import br.com.cartorio.entity.Atendimento;
 import br.com.cartorio.entity.Senha;
-import br.com.cartorio.entity.Servico;
 import br.com.cartorio.entity.SubServico;
 import br.com.cartorio.service.AtendimentoService;
 import br.com.cartorio.service.SenhaService;
@@ -64,7 +65,6 @@ public class AtendimentoController {
 			}else {
 				senhasParaAtender = senhaService.listarSenhasBySubServicoParaAtender(subServicoResgatado);
 			}
-			
 			senhasEmAtendimento = senhaService.listarSenhasBySubServicoEmAtendimento(subServicoResgatado);
 			
 			model.addAttribute("senhasParaAtender", senhasParaAtender);
@@ -101,9 +101,6 @@ public class AtendimentoController {
 			atendimentoService.inserirAtendimento(atendimento);
 			model.addAttribute("atendimento", atendimento);
 			
-			Atendimento atendimentoAntigo = atendimentoService.listarAtendimentosAnterior(senhaResgatada, subServicoResgatado);
-			atendimentoService.fecharAtendimento(atendimentoAntigo);
-			
 			return "index";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,11 +126,4 @@ public class AtendimentoController {
 			return  "Erro";
 		}
 	}
-	
-	
-	
-	
-	
-	
-
 }

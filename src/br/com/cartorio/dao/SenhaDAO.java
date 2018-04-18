@@ -72,16 +72,36 @@ public class SenhaDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<Senha> listarSenhasBySubServicoParaAtender(SubServico subServico) throws IOException {
+		
+		List<Integer> senhas = listarSenhasProximoSubServico(subServico);
+		
 		String jpql = "select s from Atendimento a "
 					+ " inner join a.senha s "
 					+ "where a.subServico.ordem =:pOrdem "
 					+ "	 and a.status = 'Fechado' "
-					+ "	 and s.servico.id =:pServico";
+					+ "	 and s.servico.id =:pServico"
+					+ "	 and s.id not in (:pSenhas)";
 		
 		Query query = manager.createQuery(jpql);
 		query.setParameter("pOrdem", subServico.getOrdem() - 1);
 		query.setParameter("pServico", subServico.getServico().getId());
+		query.setParameter("pSenhas", senhas);
 		List<Senha> result = query.getResultList();
+		
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private List<Integer> listarSenhasProximoSubServico(SubServico subServico) throws IOException {
+		String jpql = "select s.id from Atendimento a "
+					+ "inner join a.senha s "
+					+ "where a.subServico.ordem =:pOrdem "
+					+ "	 and s.servico.id =:pServico";
+		
+		Query query = manager.createQuery(jpql);
+		query.setParameter("pOrdem", subServico.getOrdem());
+		query.setParameter("pServico", subServico.getServico().getId());
+		List<Integer> result = query.getResultList();
 		
 		return result;
 	}
