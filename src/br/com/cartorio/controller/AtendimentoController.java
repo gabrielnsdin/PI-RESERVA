@@ -101,6 +101,9 @@ public class AtendimentoController {
 			atendimentoService.inserirAtendimento(atendimento);
 			model.addAttribute("atendimento", atendimento);
 			
+			Atendimento atendimentoAntigo = atendimentoService.listarAtendimentosAnterior(senhaResgatada, subServicoResgatado);
+			atendimentoService.fecharAtendimento(atendimentoAntigo);
+			
 			return "index";
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -42,7 +42,7 @@
 						<tbody>
 							<c:forEach var="senha" items="${senhasParaAtender}">
 							<tr>
-								<td>${senha.numero}</td>
+								<td>${senha.servico.sigla} - ${senha.numero}</td>
 								<td>${senha.preferencial}</td>
 								<td>${senha.status}</td>
 								<td>

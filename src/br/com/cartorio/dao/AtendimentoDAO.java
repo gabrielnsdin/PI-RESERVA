@@ -72,5 +72,13 @@ public class AtendimentoDAO {
 
 		return query.getResultList();
 	}
+	
+	public Atendimento listarAtendimentosAnterior(Senha senha, SubServico subServico) throws IOException {
+		String jpql = "Select a from Atendimento a " + "where a.senha.id = :pSenha and a.subServico.ordem = :pOrdem";
+		Query query = manager.createQuery(jpql);
+		query.setParameter("pSenha", senha.getId());
+		query.setParameter("pOrdem", subServico.getOrdem() - 1);
+		return (Atendimento) query.getSingleResult();
+	}
 
 }
